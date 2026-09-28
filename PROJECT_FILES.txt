@@ -1,0 +1,118 @@
+Screen Mirror App - Project File Structure
+═══════════════════════════════════════════════════════════════
+
+Root Level Documentation:
+├── README.md                          Main project overview and architecture
+├── QUICKSTART.md                      Step-by-step getting started guide
+├── PROJECT_SUMMARY.md                 Technical implementation details
+├── GIT_SETUP.md                       Git initialization and workflow guide
+├── .gitignore                         Git ignore rules (macOS + Android + Swift)
+├── .gitattributes                     Git line ending configuration
+└── PROJECT_FILES.txt                  This file
+
+MacServer (Swift Package):
+├── MacServer/
+│   ├── Package.swift                  Swift Package Manager manifest
+│   ├── README.md                      MacServer specific documentation
+│   ├── run.sh                         Build and run script (executable)
+│   ├── .gitignore                     Build artifacts ignore
+│   └── ScreenMirrorServer/
+│       └── Sources/
+│           ├── main.swift             Entry point, signal handling, coordination
+│           ├── ScreenCapture.swift    ScreenCaptureKit screen capture (30 FPS)
+│           ├── H264Encoder.swift      VideoToolbox + AVCC→Annex B conversion
+│           └── TCPServer.swift        Network.framework TCP server
+
+AndroidClient (Gradle Project):
+├── AndroidClient/
+│   ├── README.md                      Android client documentation
+│   ├── build.gradle                   Top-level build configuration
+│   ├── settings.gradle                Project settings
+│   ├── gradle.properties              Gradle properties
+│   ├── gradlew                        Gradle wrapper (executable)
+│   ├── .gitignore                     Android build artifacts ignore
+│   ├── gradle/
+│   │   └── wrapper/
+│   │       └── gradle-wrapper.properties
+│   └── app/
+│       ├── build.gradle               App module build config
+│       ├── proguard-rules.pro         ProGuard rules
+│       └── src/
+│           └── main/
+│               ├── AndroidManifest.xml      Permissions and configuration
+│               ├── java/com/screenmirror/
+│               │   ├── MainActivity.kt      UI and connection management
+│               │   ├── H264Decoder.kt       MediaCodec hardware decoder
+│               │   └── NetworkReceiver.kt   TCP client + NAL parser
+│               └── res/
+│                   └── layout/
+│                       └── activity_main.xml    SurfaceView UI layout
+
+Key Files by Purpose:
+═══════════════════════════════════════════════════════════════
+
+CRITICAL IMPLEMENTATION FILES:
+  • H264Encoder.swift (MacServer)        - AVCC→Annex B conversion
+  • NetworkReceiver.kt (Android)         - NAL unit parsing
+  • ScreenCapture.swift (MacServer)      - Screen capture via ScreenCaptureKit
+  • H264Decoder.kt (Android)             - MediaCodec low latency decoder
+
+NETWORK LAYER:
+  • TCPServer.swift (MacServer)          - NWListener TCP server
+  • NetworkReceiver.kt (Android)         - TCP Socket client
+
+USER INTERFACE:
+  • MainActivity.kt (Android)            - Connection UI and lifecycle
+  • activity_main.xml (Android)          - SurfaceView layout
+
+ENTRY POINTS:
+  • main.swift (MacServer)               - Server initialization
+  • MainActivity.kt (Android)            - App entry point
+
+CONFIGURATION:
+  • Package.swift (MacServer)            - Swift dependencies
+  • build.gradle (Android app)           - Android dependencies
+  • AndroidManifest.xml                  - Permissions and settings
+
+DOCUMENTATION:
+  • README.md (root)                     - Overview and architecture
+  • QUICKSTART.md                        - Quick start guide
+  • PROJECT_SUMMARY.md                   - Implementation details
+  • GIT_SETUP.md                         - Git workflow
+
+BUILD TOOLS:
+  • run.sh (MacServer)                   - Swift build and run
+  • gradlew (Android)                    - Gradle wrapper
+
+Total Source Files:
+─────────────────────────────────────────────────────────────
+Swift files (.swift):        4 files (~600 lines)
+Kotlin files (.kt):          3 files (~579 lines)
+XML files (.xml):            2 files
+Build configs:               5 files
+Documentation:               6 files
+Scripts:                     2 files
+─────────────────────────────────────────────────────────────
+TOTAL CODE:                  ~1,179 lines
+
+Git Status:
+─────────────────────────────────────────────────────────────
+All source files should be tracked by Git.
+Build artifacts (.build/, build/, *.apk) are ignored.
+IDE files (.idea/, xcuserdata/) are ignored.
+
+To initialize Git repository:
+  cd ~/ScreenMirrorApp
+  git init
+  git add .
+  git commit -m "Initial commit: Screen Mirror macOS to Android"
+
+Critical Files for Deployment:
+─────────────────────────────────────────────────────────────
+MacServer binary:
+  MacServer/.build/release/ScreenMirrorServer (generated)
+
+Android APK:
+  AndroidClient/app/build/outputs/apk/debug/app-debug.apk (generated)
+
+These are NOT tracked in Git (built from source).

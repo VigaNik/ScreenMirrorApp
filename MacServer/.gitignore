@@ -1,0 +1,23 @@
+# Xcode
+.DS_Store
+*.xcodeproj
+*.xcworkspace
+!default.xcworkspace
+xcuserdata/
+*.moved-aside
+DerivedData/
+.swiftpm/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+Packages/
+Package.resolved
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
